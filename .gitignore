@@ -1,0 +1,55 @@
+# =============================================================================
+# .gitignore — Files and directories that should NOT be committed to git
+# =============================================================================
+
+# --- Secrets & Configuration ---
+# CRITICAL: Never commit your .env file — it contains API keys and credentials
+.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-wheel-metadata/
+
+# --- uv / Virtual Environments ---
+.venv/
+venv/
+env/
+ENV/
+# uv.lock is intentionally NOT ignored — it should be committed to ensure
+# reproducible installs across machines.
+
+# --- Output Files ---
+# The generated Markdown reports are output artefacts, not source code.
+# You may choose to commit them (remove this line) if you want to track reports.
+output/*.md
+
+# --- IDE & Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Testing & Coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- Jupyter Notebooks (if you experiment interactively) ---
+.ipynb_checkpoints/
+*.ipynb
+
+# --- Logs ---
+*.log
+crewai_logs/

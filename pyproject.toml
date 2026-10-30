@@ -1,0 +1,81 @@
+# =============================================================================
+# pyproject.toml — Project metadata and dependency configuration for uv
+# =============================================================================
+#
+# uv is a fast Python package manager written in Rust. It replaces pip,
+# pip-tools, virtualenv, and poetry all in one tool.
+#
+# Key uv commands used in this project:
+#   uv sync               — Install all dependencies into a virtual environment
+#   uv run ai-news-crew   — Run the project entry point (defined below)
+#   uv add <package>      — Add a new dependency to this file and install it
+#   uv lock               — Regenerate the lockfile (uv.lock)
+#
+# =============================================================================
+
+[project]
+name = "ai-news-crew"
+version = "0.1.0"
+description = "A tutorial project demonstrating agentic AI using CrewAI and AWS Bedrock to fetch, summarise, and report on the latest AI/LLM news."
+readme = "README.md"
+# Python 3.11+ is required for full CrewAI compatibility (uses modern type hints)
+requires-python = ">=3.11"
+
+# =============================================================================
+# Dependencies
+# =============================================================================
+#
+# crewai         — The core multi-agent orchestration framework
+# crewai-tools   — Pre-built tools for agents (SerperDevTool, ScrapeWebsiteTool)
+# boto3          — AWS SDK for Python; used by LiteLLM to authenticate with Bedrock
+# python-dotenv  — Loads environment variables from a .env file into os.environ
+#
+# Note: CrewAI bundles LiteLLM internally. LiteLLM is the universal LLM adapter
+# that translates CrewAI's requests into the correct API format for each provider
+# (OpenAI, Anthropic, AWS Bedrock, Google Gemini, etc.). You do NOT need to
+# install LiteLLM separately.
+#
+# =============================================================================
+dependencies = [
+    "crewai>=1.15.0",
+    "crewai-tools>=1.15.0",
+    "boto3>=1.35.0",
+    "python-dotenv>=1.0.0",
+]
+
+# =============================================================================
+# Scripts — defines CLI commands available via `uv run`
+# =============================================================================
+#
+# Format: "command-name" = "module.path:function_name"
+# This means `uv run ai-news-crew` will call the `run()` function
+# inside src/ai_news_crew/main.py
+#
+# =============================================================================
+[project.scripts]
+ai-news-crew = "ai_news_crew.main:run"
+
+# =============================================================================
+# Build system — tells uv/pip how to build this project as a package
+# =============================================================================
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# =============================================================================
+# Hatch configuration — tells the build backend where to find source files
+# =============================================================================
+#
+# The "src" layout keeps source code separate from project config files.
+# This prevents accidental imports of the package from the root directory
+# during development, which can mask packaging issues.
+#
+# src/
+#   ai_news_crew/    ← Python package (importable as `ai_news_crew`)
+#     __init__.py
+#     main.py
+#     ...
+#
+# =============================================================================
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_news_crew"]
